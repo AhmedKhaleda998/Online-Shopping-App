@@ -2,38 +2,41 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
-const mongoConnect = require('./util/database').mongoConnect;
 const errorController = require('./controllers/error');
 
 const app = express();
 
 const PORT = 5200;
+const MongodbURI = 'mongodb+srv://ahmedkhaleda:abcd1234@cluster.1w2hiwu.mongodb.net/shop?retryWrites=true&w=majority';
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
-const User = require('./models/user');
+// const User = require('./models/user');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use((req, res, next) => {
-    User.findById('64ac51840465c438eef84a19')
-        .then(user => {
-            req.user = new User(user.name, user.email, user.cart, user._id);
-            next();
-        })
-        .catch(err => console.log(err));
-});
+// app.use((req, res, next) => {
+//     User.findById('64ac51840465c438eef84a19')
+//         .then(user => {
+//             req.user = new User(user.name, user.email, user.cart, user._id);
+//             next();
+//         })
+//         .catch(err => console.log(err));
+// });
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoConnect(() => {
+mongoose.connect(MongodbURI).then((result) => {
     app.listen(PORT, console.log(`Running on port ${PORT}`));
-})
+}).catch((err) => {
+    console.log(err);
+});
