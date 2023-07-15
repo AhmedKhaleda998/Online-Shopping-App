@@ -16,19 +16,19 @@ app.set('views', 'views');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
-// const User = require('./models/user');
+const User = require('./models/user');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use((req, res, next) => {
-//     User.findById('64ac51840465c438eef84a19')
-//         .then(user => {
-//             req.user = new User(user.name, user.email, user.cart, user._id);
-//             next();
-//         })
-//         .catch(err => console.log(err));
-// });
+app.use((req, res, next) => {
+    User.findById('64b14ee6f50bb5342d84e5cb')
+        .then(user => {
+            req.user = user;
+            next();
+        })
+        .catch(err => console.log(err));
+});
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
@@ -36,6 +36,18 @@ app.use(shopRoutes);
 app.use(errorController.get404);
 
 mongoose.connect(MongodbURI).then((result) => {
+    User.findOne().then((user) => {
+        if (!user) {
+            const user = new User({
+                name: 'Ahmed',
+                email: 'ahmed@gmail.com',
+                cart: {
+                    items: []
+                }
+            });
+            user.save();
+        }
+    });
     app.listen(PORT, console.log(`Running on port ${PORT}`));
 }).catch((err) => {
     console.log(err);
