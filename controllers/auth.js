@@ -96,7 +96,6 @@ exports.postLogin = (req, res, next) => {
             req.session.isLoggedIn = true;
             req.session.user = user;
             return req.session.save(err => {
-              console.log(err);
               res.redirect('/');
             });
           }
@@ -125,7 +124,6 @@ exports.postSignup = (req, res, next) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors.array());
     return res.status(422).render('auth/signup', {
       path: '/signup',
       pageTitle: 'Signup',
