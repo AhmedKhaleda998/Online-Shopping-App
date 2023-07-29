@@ -15,7 +15,7 @@ To run this application locally, you'll need the following installed on your sys
 <br>
 
 ## Installation
-1.***  Clone the repository to your local machine: git clone https://github.com/your_username/online-shopping-app.git
+1. Clone the repository to your local machine: git clone https://github.com/your_username/online-shopping-app.git
 2. Change into the project directory: cd online-shopping-app
 3. Install the required npm packages: npm install
 4. Set up environment variables: MONGODB_URI=your_mongodb_connection_string_here STRIPE_SECRET_KEY=your_stripe_secret_key_here SESSION_SECRET=your_session_secret_here      Make sure to replace the placeholders with your actual MongoDB URI, Stripe Secret Key, and a secret key for the session.
